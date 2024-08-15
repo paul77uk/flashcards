@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "firebase.js", "app/api/checkout-sessions/route.js", "app/flashcards/page.js", "app/page.js", "app/sign-in/[[...sign-in]]/page.js"],
   "exclude": ["node_modules"]
 }
