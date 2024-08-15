@@ -65,7 +65,9 @@ export default function Generate() {
      }
 
      const data = await response.json();
-     setFlashcards(data);
+
+     console.log(data.flashcards.flashcards);
+     setFlashcards(data.flashcards.flashcards);
    } catch (error) {
      console.error("Error generating flashcards:", error);
      alert("An error occurred while generating flashcards. Please try again.");
@@ -159,6 +161,16 @@ export default function Generate() {
       </Box>
 
       {/* We'll add flashcard display here */}
+      {flashcards.length > 0 && (
+      <div>
+        {flashcards.map((flashcard, index) => (
+          <div key={index}>
+            <p>{flashcard.front}</p>
+            <p>{flashcard.back}</p>
+          </div>
+        ))}
+      </div>
+    )}
     </Container>
   );
 }
