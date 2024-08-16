@@ -1,7 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, DialogActions, Dialog, DialogContent, DialogTitle, DialogContentText } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  DialogActions,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+} from "@mui/material";
 
 export default function Generate() {
   const [text, setText] = useState("");
@@ -48,31 +62,30 @@ export default function Generate() {
     }
   };
 
- const handleSubmit = async () => {
-   if (!text.trim()) {
-     alert("Please enter some text to generate flashcards.");
-     return;
-   }
+  const handleSubmit = async () => {
+    if (!text.trim()) {
+      alert("Please enter some text to generate flashcards.");
+      return;
+    }
 
-   try {
-     const response = await fetch("/api/generate", {
-       method: "POST",
-       body: text,
-     });
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        body: text,
+      });
 
-     if (!response.ok) {
-       throw new Error("Failed to generate flashcards");
-     }
+      if (!response.ok) {
+        throw new Error("Failed to generate flashcards");
+      }
 
-     const data = await response.json();
-
-     console.log(data.flashcards.flashcards);
-     setFlashcards(data.flashcards.flashcards);
-   } catch (error) {
-     console.error("Error generating flashcards:", error);
-     alert("An error occurred while generating flashcards. Please try again.");
-   }
- };
+      const data = await response.json();
+      console.log("client", data);
+      setFlashcards(data);
+    } catch (error) {
+      console.error("Error generating flashcards:", error);
+      alert("An error occurred while generating flashcards. Please try again.");
+    }
+  };
 
   return (
     <Container maxWidth="md">
@@ -162,15 +175,15 @@ export default function Generate() {
 
       {/* We'll add flashcard display here */}
       {flashcards.length > 0 && (
-      <div>
-        {flashcards.map((flashcard, index) => (
-          <div key={index}>
-            <p>{flashcard.front}</p>
-            <p>{flashcard.back}</p>
-          </div>
-        ))}
-      </div>
-    )}
+        <div>
+          {flashcards.map((flashcard, index) => (
+            <div key={index}>
+              <p>{flashcard.front}</p>
+              <p>{flashcard.back}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </Container>
   );
 }

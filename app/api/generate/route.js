@@ -1,10 +1,11 @@
 const { CohereClient } = require("cohere-ai");
+import next from "next";
 import { NextResponse } from "next/server";
 
 const systemPrompt = `
 You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
 Both front and back should be one sentence long.
-You should return in the following JSON format:
+You should return in the following format
 {
   "flashcards":[
     {
@@ -35,10 +36,23 @@ export async function POST(req) {
     connectors: [{ id: "web-search" }],
   });
 
-  console.log(response.text);
+  // Parse the JSON response from the OpenAI API
+  // const flashcards = response.text;
+  // remove ```json from the start and end of the response
+  const start = response.text.indexOf("{");
+  const end = response.text.lastIndexOf("}");
+  response.text = response.text.substring(start, end + 1);
 
-  return new NextResponse({
-    status: 200,
-    body: JSON.stringify({ flashcards: response.text }),
-  });
+  console.log(response.text);
+  
+  const parsedFlashcards = JSON.parse(response.text);
+
+  
+
+  // Return the flashcards as a JSON response
+  // const nextResponse = new NextResponse(flashcards);
+  // console.log(nextResponse);
+
+  // return nextResponse;
+  return NextResponse.json(parsedFlashcards.flashcards);
 }
