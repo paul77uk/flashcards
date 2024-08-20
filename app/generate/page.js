@@ -16,6 +16,9 @@ import {
   DialogTitle,
   DialogContentText,
 } from "@mui/material";
+import { doc, collection, getDoc, writeBatch } from "firebase/firestore";
+import db from "../.././firebase.js";
+import { useUser } from "@clerk/nextjs";
 
 export default function Generate() {
   const [text, setText] = useState("");
@@ -24,6 +27,12 @@ export default function Generate() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
+
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
 
   const saveFlashcards = async () => {
     if (!setName.trim()) {
@@ -174,7 +183,7 @@ export default function Generate() {
       </Box>
 
       {/* We'll add flashcard display here */}
-      {flashcards.length > 0 && (
+      {/* {flashcards.length > 0 && (
         <div>
           {flashcards.map((flashcard, index) => (
             <div key={index}>
@@ -183,7 +192,7 @@ export default function Generate() {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </Container>
   );
 }
